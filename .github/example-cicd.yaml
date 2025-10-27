@@ -1,0 +1,30 @@
+name: List S3 Buckets with OIDC
+
+on:
+  push:
+
+
+# Required for OIDC token generation
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  list-s3-buckets:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials using OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-session-name: GitHubActions-S3List
+          aws-region: eu-west-2  # Change to your preferred region
+          
+      - name: Verify AWS identity
+        run: |
+          echo "Current AWS identity:"
+          aws sts get-caller-identity
