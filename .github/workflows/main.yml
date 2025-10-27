@@ -28,3 +28,8 @@ jobs:
         run: |
           echo "Current AWS identity:"
           aws sts get-caller-identity
+
+      - name: List Buckets
+        run: |
+          echo "Check bucket list:"
+          aws s3 ls
